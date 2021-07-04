@@ -88,9 +88,9 @@ public:
 
 int main(){
     HashTable<11> hash;
-    hash.add("Mia","+380678303012","Kyiv, Yakubovskogo");
-    hash.add("Sue","+380675096599","Kyiv, Yakubovskogo");
-    hash.add("Mia","+380675096599","Kyiv, Yakubovskogo"); // duplicates are not allowed
+    hash.add("Mia","+380678303012","Kyiv, Yakubovskogo,1");
+    hash.add("Sue","+380675096599","Kyiv, Yakubovskogo,2");
+    hash.add("Mia","+380675096565","Kyiv, Yakubovskogo,3"); // duplicates are not allowed
     std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n"<<hash["Unknown"]<<"\n\n"; //Unknown person doesn't exist
     hash.remove("Sue");
     std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n\n"; //Sue doesn't exist on this line
