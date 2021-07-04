@@ -27,6 +27,19 @@ public:
     }
 
     void add(const std::string& name,const std::string& phone,const std::string& address){
+        //checking for duplicates
+        for(int index = 0; index < hash.size();++index){
+            auto& currentList = hash[index];
+            list::iterator iter = currentList.begin();
+            while(iter!= currentList.end()){
+                if(iter->first == name){
+                    std::cout<<"\nNo duplicates allowed\n";
+                    return;
+                }
+            iter++;
+            }
+        }
+        //added new hash member
         hash[hashing(name)].push_back(std::make_pair(name,std::make_pair(phone,address)));
     }
 
@@ -46,7 +59,7 @@ public:
 
     std::string get_name(const std::string& phone){
         for(int index = 0; index < hash.size();++index){
-            auto currentList = hash[index];
+            auto& currentList = hash[index];
             list::iterator iter = currentList.begin();
             while(iter!= currentList.end()){
                 if(iter->second.first == phone){
@@ -60,7 +73,7 @@ public:
 
     //get_phone number + address
     std::string operator[](const std::string& name){
-        auto currentList = hash[hashing(name)];
+        auto& currentList = hash[hashing(name)];
         list::iterator iter = currentList.begin();
         while(iter!= currentList.end()){
             if(iter->first == name){
@@ -77,12 +90,12 @@ int main(){
     HashTable<11> hash;
     hash.add("Mia","+380678303012","Kyiv, Yakubovskogo");
     hash.add("Sue","+380675096599","Kyiv, Yakubovskogo");
-    std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n"<<hash["Unknown"]<<"\n\n";
+    hash.add("Mia","+380675096599","Kyiv, Yakubovskogo"); // duplicates are not allowed
+    std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n"<<hash["Unknown"]<<"\n\n"; //Unknown person doesn't exist
     hash.remove("Sue");
-    std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n\n";
-    hash.remove("Unknown");
+    std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n\n"; //Sue doesn't exist on this line
+    hash.remove("Unknown"); //Unknown person doesn't exist
     std::cout<<"\n\n";
     std::cout<<hash.get_name("+380678303012")<<"\n";
-    std::cout<<hash.get_name("45435642423")<<"\n\n";
-
+    std::cout<<hash.get_name("45435642423")<<"\n\n"; //no such person with current number
 }
