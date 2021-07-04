@@ -20,7 +20,7 @@ private:
         return arrayIndex;
     } 
 public:
-    using list_iter = std::list<std::pair<std::string,std::pair<std::string,std::string> > >;
+    using list = std::list<std::pair<std::string,std::pair<std::string,std::string> > >;
 
     HashTable():hash(size) {
 
@@ -33,7 +33,7 @@ public:
     void remove(const std::string& name){
         int index = hashing(name);
         auto& currentList = hash[index];
-        list_iter::iterator iter = currentList.begin();
+        list::iterator iter = currentList.begin();
         while(iter!= currentList.end()){
             if(iter->first == name){
                 currentList.erase(iter);
@@ -44,13 +44,27 @@ public:
         std::cout<<"No such person exists";
     }
 
-    //get_phone number
+    std::string get_name(const std::string& phone){
+        for(int index = 0; index < hash.size();++index){
+            auto currentList = hash[index];
+            list::iterator iter = currentList.begin();
+            while(iter!= currentList.end()){
+                if(iter->second.first == phone){
+                    return "name: " + iter->first;
+                }
+            iter++;
+            }
+        }
+        return "No such person exists";
+    }
+
+    //get_phone number + address
     std::string operator[](const std::string& name){
         auto currentList = hash[hashing(name)];
-        list_iter::iterator iter = currentList.begin();
+        list::iterator iter = currentList.begin();
         while(iter!= currentList.end()){
             if(iter->first == name){
-                return iter->second.first;
+                return "phone number " + iter->second.first + "  address: " + iter->second.second;
             }
             iter++;
         }
@@ -63,10 +77,12 @@ int main(){
     HashTable<11> hash;
     hash.add("Mia","+380678303012","Kyiv, Yakubovskogo");
     hash.add("Sue","+380675096599","Kyiv, Yakubovskogo");
-    std::cout<<hash["Mia"]<<"  "<<hash["Sue"]<<"  "<<hash["Unknown"]<<"\n\n";
+    std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n"<<hash["Unknown"]<<"\n\n";
     hash.remove("Sue");
-    std::cout<<hash["Mia"]<<"  "<<hash["Sue"]<<"\n\n";
+    std::cout<<hash["Mia"]<<"\n"<<hash["Sue"]<<"\n\n";
     hash.remove("Unknown");
     std::cout<<"\n\n";
+    std::cout<<hash.get_name("+380678303012")<<"\n";
+    std::cout<<hash.get_name("45435642423")<<"\n\n";
 
 }
