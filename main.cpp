@@ -14,7 +14,7 @@ private:
         int indexSum{};
         for(int letter = 0; letter < name.size();++letter){
             // converting chars to ints using ASCII table 
-            indexSum = static_cast<int>(name[letter]);
+            indexSum += static_cast<int>(name[letter]);
         }
         int arrayIndex = indexSum % hash.size();
         return arrayIndex;
@@ -46,9 +46,9 @@ public:
 };
 
 int main(){
-    HashTable<10> hash;
+    HashTable<11> hash;
     hash.add("Mia","+380678303012","Kyiv, Yakubovskogo");
     hash.add("Sue","+380675096599","Kyiv, Yakubovskogo");
-    std::cout<<hash["Mia"]<<"  "<<hash["Sue"]<<"\n\n";
+    std::cout<<hash["Mia"]<<"  "<<hash["Sue"]<<"  "<<hash["Unknown"]<<"\n\n";
 
 }
