@@ -20,6 +20,7 @@ private:
         return arrayIndex;
     } 
 public:
+    using list_iter = std::list<std::pair<std::string,std::pair<std::string,std::string> > >;
 
     HashTable():hash(size) {
 
@@ -29,8 +30,21 @@ public:
         hash[hashing(name)].push_back(std::make_pair(name,std::make_pair(phone,address)));
     }
 
+    void remove(const std::string& name){
+        int index = hashing(name);
+        auto& currentList = hash[index];
+        list_iter::iterator iter = currentList.begin();
+        while(iter!= currentList.end()){
+            if(iter->first == name){
+                currentList.erase(iter);
+                return;
+            }
+            iter++;
+        }
+        std::cout<<"No such person exists";
+    }
+
     //get_phone number
-    using list_iter = std::list<std::pair<std::string,std::pair<std::string,std::string> > >;
     std::string operator[](const std::string& name){
         auto currentList = hash[hashing(name)];
         list_iter::iterator iter = currentList.begin();
@@ -50,5 +64,9 @@ int main(){
     hash.add("Mia","+380678303012","Kyiv, Yakubovskogo");
     hash.add("Sue","+380675096599","Kyiv, Yakubovskogo");
     std::cout<<hash["Mia"]<<"  "<<hash["Sue"]<<"  "<<hash["Unknown"]<<"\n\n";
+    hash.remove("Sue");
+    std::cout<<hash["Mia"]<<"  "<<hash["Sue"]<<"\n\n";
+    hash.remove("Unknown");
+    std::cout<<"\n\n";
 
 }
